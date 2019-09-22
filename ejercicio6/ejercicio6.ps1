@@ -1,4 +1,25 @@
 <#
+.SYNOPSIS
+    Este script permite realizar la suma de dos matrices o el producto escalar.
+
+.PARAMETER Entrada
+    Path del archivo que contiene la matriz.
+
+.PARAMETER Producto
+    Numero a ser utilizado para el producto escalar.
+
+.PARAMETER Archivos
+    Path del archivo que contiene la matriz a sumar.
+
+.EXAMPLE
+    ejercicio6.ps1 -Entrada=matriz1 -Suma=matriz2
+    Suma la matriz1 con la matriz2
+
+    ejercicio6.ps1 -Entrada=matriz2 -Producto=10
+    Toma la matriz2 y realiza el producto escalar con 10
+#>
+
+<#
 ***********************************************************************************
  Nombre Del Script:        ejercicio6.ps1
  Trabajo Practico Nro.:    1
@@ -18,18 +39,23 @@
 
 [CmdletBinding()]
 Param(
-    [Parameter(Mandatory = $True, Position = 1)]
+    [Parameter(Mandatory = $True)]
     [ValidateNotNullOrEmpty()]
     [string]$Entrada,
 	
-    [Parameter(Mandatory = $false, Position = 2)]
+    [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [int]$Producto,
 
-    [Parameter(Mandatory = $false, Position = 2)]
+    [Parameter(Mandatory = $false)]
     [ValidateNotNullOrEmpty()]
     [string]$Suma
 )
+
+if ($Suma -and $Producto) {
+    Write-Host "Solo se admite una opcion a la vez"
+    exit
+}
 
 $texto_archivo = Get-Content -Path $Entrada;
 $renglones = ($texto_archivo.Split('\n')); #Paso las palabras a un vector.
