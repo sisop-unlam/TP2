@@ -14,6 +14,7 @@
 .EXAMPLE
     ejercicio6.ps1 -Entrada=matriz1 -Suma=matriz2
     Suma la matriz1 con la matriz2
+.EXAMPLE
 
     ejercicio6.ps1 -Entrada=matriz2 -Producto=10
     Toma la matriz2 y realiza el producto escalar con 10
