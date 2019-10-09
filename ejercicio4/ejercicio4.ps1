@@ -18,7 +18,7 @@
 .SYNOPSIS
     Este script permite realizar las siguientes operaciones sobre archivos ZIP:
 	-Descompresión: Descomprime un archivo ZIP en un directorio pasado por parámetro.
-	-Compresión: Comprime un directorio en un archivo ZIP.
+	-Compresión: Comprime un directorio en un archivo .ZIP.
 	-Información: Muestra un listado con los nombres de los archivos, el peso y la relación de compresión, que se encuentran dentro de un archivo ZIP.
 	
 .PARAMETER PathZip
@@ -103,7 +103,7 @@ if ($Comprimir -and $PathZip -and $Directorio) {
 	
 	Write-Host "Comprimiendo.............."
 	#Compress-Archive -Path $Directorio  -CompressionLevel Optimal -DestinationPath $destination #sin la clase zipfile
-	[io.compression.zipfile]::CreateFromDirectory($Directorio, $destination)
+	[io.compression.zipfile]::CreateFromDirectory($Directorio, $destination) #con  la clase zipfile
 	
 	exit
 }
@@ -129,7 +129,7 @@ if ($Descomprimir -and $PathZip -and $Directorio) {
 	
 	Write-Host "Descomprimiendo.............."
 	#Expand-Archive $PathZip -DestinationPath $Directorio  #sin la clase zipfile
-	[io.compression.zipfile]::ExtractToDirectory($PathZip,  $Directorio)
+	[io.compression.zipfile]::ExtractToDirectory($PathZip,  $Directorio)  #con  la clase zipfile
 	
 	exit
 }
