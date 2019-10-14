@@ -134,4 +134,32 @@ if ($Descomprimir -and $PathZip -and $Directorio) {
 	exit
 }
 
+#informar
+if ($informar -and $PathZip) {
+    
+	if ($PathZip) {
+    $existe3 = Test-Path $PathZip
+    if (-not $existe3) {
+        Write-Host "El directorio a analizar no existe"
+        exit
+    }
+	}
+    
+	
+	$zip = [System.IO.Compression.ZipFile]::open($PathZip,”update”)
+	
+	$zip.entries #muestra los datos de los archivos dentro del .zip
+	$total=$zip.entries.length
+	#$total #peso sin comprimir
+	$comprimido=$zip.entries.compressedlength
+	#$comprimido #peso comprimido
+	
+	#$relacion=$comprimido/[float]$total
+	
+	Write-Host "Relacion de compresión"
+	$relacion
+	
+	$zip.Dispose() 
+	exit
+}
 
