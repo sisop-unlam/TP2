@@ -87,7 +87,7 @@ if (Test-Path -Path $Entrada ) {
                 New-Item -ItemType Directory -Force -Path $dirBaseDestino
             }
             
-            Move-Item -Path $line.origen -Destination $line.destino -Force -WhatIf
+            Move-Item -Path $line.origen -Destination $line.destino -Force
 
             #Obtengo la fecha actual
             $hoy = Get-Date -Format "dd/MM/yyyy HH:mm:ss";
