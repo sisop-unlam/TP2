@@ -36,10 +36,25 @@
 Param(
     [Parameter(Mandatory = $True, Position = 1)]
     [ValidateNotNullOrEmpty()]
+    [ValidateScript( {
+            if (-Not ($_ | Test-Path -PathType Leaf) ) {
+                throw "El PATH ingresado debe ser un archivo"
+            }
+            if ($_ -notmatch "(\.csv)") {
+                throw "El archivo debe ser del tipo .csv"
+            }
+            return $true 
+        })]
     [string]$Entrada,
 	
     [Parameter(Mandatory = $True, Position = 2)]
     [ValidateNotNullOrEmpty()]
+    [ValidateScript( {
+            if ($_ -notmatch "(\.csv)") {
+                throw "El archivo debe ser del tipo .csv"
+            }
+            return $true 
+        })]
     [string]$Salida
 )
 
@@ -55,8 +70,15 @@ if (Test-Path -Path $Entrada ) {
     $lista = Import-Csv -Path $Entrada  -Delimiter  ','
     $arrMovimientos = @()
 
+    #Validacion del CSV de entrada
+    if ($lista[0].psobject.properties.name.count -ne 2 -or $lista[0].psobject.properties.name[0] -ne 'origen' -or $lista[0].psobject.properties.name[1] -ne 'destino') {
+        Write-Host "Archivo .csv origen invalido2"
+        exit
+    }
+    
     #Voy recorreando renglon a renglon el CSV
-    foreach ($line in $lista) {    
+    foreach ($line in $lista) {   
+
         #Compruebo que puedo mover el archivo
         if (Test-Path -Path $line.origen ) {
             #Si no tengo el dir base del destino, debo crearlo.
