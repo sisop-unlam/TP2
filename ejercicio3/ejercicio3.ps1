@@ -72,7 +72,7 @@ if (Test-Path -Path $Entrada ) {
 
     #Validacion del CSV de entrada
     if ($lista[0].psobject.properties.name.count -ne 2 -or $lista[0].psobject.properties.name[0] -ne 'origen' -or $lista[0].psobject.properties.name[1] -ne 'destino') {
-        Write-Host "Archivo .csv origen invalido2"
+        Write-Host "Archivo .csv origen invalido"
         exit
     }
     
