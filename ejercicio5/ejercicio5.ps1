@@ -43,43 +43,54 @@
 
 [CmdletBinding()]
 Param(
-    [Parameter(Mandatory = $false)]
+    [Parameter(ParameterSetName = "Procesos", Mandatory = "true" ) ]
     [switch]$Procesos,
 	
-    [Parameter(Mandatory = $false)]
+    [Parameter(ParameterSetName = "Peso", Mandatory = "true" ) ]
     [switch]$Peso,
 
-    [Parameter(Mandatory = $false)]
+    [Parameter(ParameterSetName = "Peso", Mandatory = "true" ) ]
     [string]$Directorio
 )
 
-if (-not $Procesos -and -not $Directorio) {
-    Write-Host "Ingrese un parametro"
-    exit
-}
-if ($Procesos -and $Peso) {
-    Write-Host "Solo puede usarse uno a la vez"
-    exit
-}
-if ($Directorio -and (-not $Peso)) {
-    Write-Host "Para pasar un directorio se necesita usar -Peso"
-    exit
-}
-if ($Directorio) {
-    $existe = Test-Path $directorio
-    if (-not $existe) {
-        Write-Host "El directorio no existe"
-        exit
+switch ($PSCmdlet.ParameterSetName) {
+    'Procesos' {  
+        if ($Procesos -and $Peso) {
+            Write-Host "Solo puede usarse uno a la vez"
+            exit
+        }
+
+        while ($true) {
+            $cantidadProcesos = Get-process
+            Write-Host $cantidadProcesos.Count
+           
+            #Cada 10 segundos
+            Start-Sleep 10
+        }
+    }
+    'Peso' {
+        if ($Directorio -and (-not $Peso)) {
+            Write-Host "Para pasar un directorio se necesita usar -Peso"
+            exit
+        }
+
+        if ($Directorio) {
+            $existe = Test-Path $directorio
+            if (-not $existe) {
+                Write-Host "El directorio no existe"
+                exit
+            }
+        }
+
+        while ($true) {
+            "{0}" -f ((Get-ChildItem $Directorio -Recurse | Measure-Object -Property Length -Sum -ErrorAction Stop).Sum)
+            
+            #Cada 10 segundos
+            Start-Sleep 10
+        }
     }
 }
-while ($true) {
-    if ($Procesos) {
-        $cantidadProcesos = Get-process
-        Write-Host $cantidadProcesos.Count
-    }
-    if ($Directorio) {
-        "{0}" -f ((Get-ChildItem $Directorio -Recurse | Measure-Object -Property Length -Sum -ErrorAction Stop).Sum)
-    }
-    #Cada 10 segundos
-    Start-Sleep 10
-}
+
+
+
+
