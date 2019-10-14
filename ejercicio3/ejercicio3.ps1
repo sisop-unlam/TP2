@@ -17,7 +17,7 @@
 <#
 ***********************************************************************************
  Nombre Del Script:        ejercicio3.ps1
- Trabajo Practico Nro.:    1
+ Trabajo Practico Nro.:    2
  Ejercicio Nro.:           3
  Entrega Nro.:             1
  Integrantes:

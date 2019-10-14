@@ -23,7 +23,7 @@
 <#
 ***********************************************************************************
  Nombre Del Script:        ejercicio6.ps1
- Trabajo Practico Nro.:    1
+ Trabajo Practico Nro.:    2
  Ejercicio Nro.:           6
  Entrega Nro.:             1
  Integrantes:
