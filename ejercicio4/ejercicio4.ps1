@@ -48,26 +48,26 @@
 
 [CmdletBinding()]
 Param(
-    [Parameter(Position = 0,ParameterSetName = "Descompresión",Mandatory = $true)]
+    [Parameter(Position = 0, ParameterSetName = "Descompresión", Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [switch]$Descomprimir,
 	
-    [Parameter(Position = 0,ParameterSetName = "Compresión",Mandatory = $true)]
+    [Parameter(Position = 0, ParameterSetName = "Compresión", Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [switch]$Comprimir,
 
-    [Parameter(Position = 0,ParameterSetName="Informacion",Mandatory = $true)]
+    [Parameter(Position = 0, ParameterSetName = "Informacion", Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [switch]$Informar,
 	
-	[Parameter(ParameterSetName = "Compresión",Mandatory = $true)]
-	[Parameter(ParameterSetName = "Descompresión",Mandatory = $true)]
-	[Parameter(ParameterSetName = "Informacion",Mandatory = $true)]
+    [Parameter(ParameterSetName = "Compresión", Mandatory = $true)]
+    [Parameter(ParameterSetName = "Descompresión", Mandatory = $true)]
+    [Parameter(ParameterSetName = "Informacion", Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [string]$PathZip,
 	
-	[Parameter(ParameterSetName = "Compresión",Mandatory = $true)]
-	[Parameter(ParameterSetName = "Descompresión",Mandatory = $true)]
+    [Parameter(ParameterSetName = "Compresión", Mandatory = $true)]
+    [Parameter(ParameterSetName = "Descompresión", Mandatory = $true)]
     [ValidateNotNullOrEmpty()]
     [string]$Directorio
 	
@@ -84,89 +84,89 @@ Add-Type -assembly "system.io.compression.filesystem"
 #comprimir
 if ($Comprimir -and $PathZip -and $Directorio) {
     if ($Directorio) {
-    $existe = Test-Path $Directorio
-    if (-not $existe) {
-        Write-Host "El directorio a comprimir no existe"
-        exit
+        $existe = Test-Path $Directorio
+        if (-not $existe) {
+            Write-Host "El directorio a comprimir no existe"
+            exit
+        }
     }
-	}
-	if ($PathZip) {
-    $existe2 = Test-Path $PathZip
-    if (-not $existe2) {
-        Write-Host "El directorio de destino no existe"
-        exit
+    if ($PathZip) {
+        $existe2 = Test-Path $PathZip
+        if (-not $existe2) {
+            Write-Host "El directorio de destino no existe"
+            exit
+        }
     }
-	}
     
-	$date = Get-Date -format "dd-MM-yyyy HH:mm:ss"
-	$destination = $PathZip+(Get-Date -format "dd-MM-yyyy HH-mm-ss")+(".zip")
+    $date = Get-Date -format "dd-MM-yyyy HH:mm:ss"
+    $destination = $PathZip + (Get-Date -format "dd-MM-yyyy HH-mm-ss") + (".zip")
 	
-	Write-Host "Comprimiendo.............."
-	#Compress-Archive -Path $Directorio  -CompressionLevel Optimal -DestinationPath $destination #sin la clase zipfile
-	[io.compression.zipfile]::CreateFromDirectory($Directorio, $destination) #con  la clase zipfile
+    Write-Host "Comprimiendo.............."
+    #Compress-Archive -Path $Directorio  -CompressionLevel Optimal -DestinationPath $destination #sin la clase zipfile
+    [io.compression.zipfile]::CreateFromDirectory($Directorio, $destination) #con  la clase zipfile
 	
-	exit
+    exit
 }
 
 #descomprimir
 if ($Descomprimir -and $PathZip -and $Directorio) {
     if ($Directorio) {
-    $existe = Test-Path $Directorio
-    if (-not $existe) {
-        Write-Host "El directorio de destino no existe"
-        exit
+        $existe = Test-Path $Directorio
+        if (-not $existe) {
+            Write-Host "El directorio de destino no existe"
+            exit
+        }
     }
-	}
-	if ($PathZip) {
-    $existe2 = Test-Path $PathZip
-    if (-not $existe2) {
-        Write-Host "El directorio a descomprimir no existe"
-        exit
+    if ($PathZip) {
+        $existe2 = Test-Path $PathZip
+        if (-not $existe2) {
+            Write-Host "El directorio a descomprimir no existe"
+            exit
+        }
     }
-	}
     
 	
 	
-	Write-Host "Descomprimiendo.............."
-	#Expand-Archive $PathZip -DestinationPath $Directorio  #sin la clase zipfile
-	[io.compression.zipfile]::ExtractToDirectory($PathZip,  $Directorio)  #con  la clase zipfile
+    Write-Host "Descomprimiendo.............."
+    #Expand-Archive $PathZip -DestinationPath $Directorio  #sin la clase zipfile
+    [io.compression.zipfile]::ExtractToDirectory($PathZip, $Directorio)  #con  la clase zipfile
 	
-	exit
+    exit
 }
 
 #informar
 if ($informar -and $PathZip) {
     
-	if ($PathZip) {
-    $existe3 = Test-Path $PathZip
-    if (-not $existe3) {
-        Write-Host "El directorio a analizar no existe"
-        exit
+    if ($PathZip) {
+        $existe3 = Test-Path $PathZip
+        if (-not $existe3) {
+            Write-Host "El directorio a analizar no existe"
+            exit
+        }
     }
-	}
     
 	
-	$zip = [System.IO.Compression.ZipFile]::open($PathZip,”update”)
+    $zip = [System.IO.Compression.ZipFile]::open($PathZip, ”update”)
 	
-	$zip.entries #muestra los datos de los archivos dentro del .zip
-	$total=$zip.entries.length
-	#$total #peso sin comprimir
-	$comprimido=$zip.entries.compressedlength
-	#$comprimido #peso comprimido
+    $zip.entries #muestra los datos de los archivos dentro del .zip
+    $total = $zip.entries.length
+    #$total #peso sin comprimir
+    $comprimido = $zip.entries.compressedlength
+    #$comprimido #peso comprimido
 	
 	
-	$total = 0
-    $zip.entries.length | ForEach-Object {$total+=$_}
+    $total = 0
+    $zip.entries.length | ForEach-Object { $total += $_ }
 
     $comprimido = 0
-    $zip.entries.compressedlength | ForEach-Object {$comprimido+=$_}
+    $zip.entries.compressedlength | ForEach-Object { $comprimido += $_ }
 	
-	$relacion=$comprimido/[float]$total
+    $relacion = $comprimido / [float]$total
 	
 	
-	Write-Host "Relacion de compresión"
-	$relacion
+    Write-Host "Relacion de compresión"
+    $relacion
 	
-	$zip.Dispose() 
-	exit
+    $zip.Dispose() 
+    exit
 }
