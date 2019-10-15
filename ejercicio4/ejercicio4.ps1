@@ -154,7 +154,15 @@ if ($informar -and $PathZip) {
 	$comprimido=$zip.entries.compressedlength
 	#$comprimido #peso comprimido
 	
-	#$relacion=$comprimido/[float]$total
+	
+	$total = 0
+    $zip.entries.length | ForEach-Object {$total+=$_}
+
+    $comprimido = 0
+    $zip.entries.compressedlength | ForEach-Object {$comprimido+=$_}
+	
+	$relacion=$comprimido/[float]$total
+	
 	
 	Write-Host "Relacion de compresión"
 	$relacion
@@ -162,4 +170,3 @@ if ($informar -and $PathZip) {
 	$zip.Dispose() 
 	exit
 }
-
