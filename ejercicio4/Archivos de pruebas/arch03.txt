@@ -1,0 +1,3 @@
+La representación de hechos simples no es lo común en la clasificación de elementos, sino que se agrupan los elementos de un mismo tipo en una lista.
+
+Las listas son colecciones de elementos en Prolog. Una lista se divide en dos partes: Cabeza. Es el primer elemento de la lista. Cola. Es una lista con el resto de los elementos de la lista. La cabeza y la cola de una lista se separan con el símbolo "|". 
