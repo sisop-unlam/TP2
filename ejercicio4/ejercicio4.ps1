@@ -98,8 +98,7 @@ if ($Comprimir -and $PathZip -and $Directorio) {
         }
     }
     
-    $date = Get-Date -format "dd-MM-yyyy HH:mm:ss"
-    $destination = $PathZip + (Get-Date -format "dd-MM-yyyy HH-mm-ss") + (".zip")
+    $destination = $PathZip + " "+(Get-Date -format "dd-MM-yyyy HH-mm-ss") + (".zip")
 	
     Write-Host "Comprimiendo.............."
     #Compress-Archive -Path $Directorio  -CompressionLevel Optimal -DestinationPath $destination #sin la clase zipfile
@@ -146,27 +145,23 @@ if ($informar -and $PathZip) {
     }
     
 	
-    $zip = [System.IO.Compression.ZipFile]::open($PathZip, ”update”)
+    $zip = [System.IO.Compression.ZipFile]::open($PathZip, "update")
 	
-    $zip.entries #muestra los datos de los archivos dentro del .zip
-    $total = $zip.entries.length
-    #$total #peso sin comprimir
-    $comprimido = $zip.entries.compressedlength
-    #$comprimido #peso comprimido
-	
-	
-    $total = 0
-    $zip.entries.length | ForEach-Object { $total += $_ }
-
-    $comprimido = 0
-    $zip.entries.compressedlength | ForEach-Object { $comprimido += $_ }
-	
-    $relacion = $comprimido / [float]$total
-	
-	
-    Write-Host "Relacion de compresión"
-    $relacion
-	
+    $zip.entries | ForEach-Object {
+        $pesoComprimido = $_.CompressedLength
+        $pesoTotal = $_.Length
+       
+        $archivo = [pscustomobject]@{
+             Nombre_de_archivo = $_
+             Peso_original = $pesoComprimido
+             Relacion_de_compresion = "{0:P2}" -f (($pesoComprimido / $pesoTotal))
+        }
+        #Hace el print
+        $archivo
+    }
+	if($zip.entries.count -eq 0){
+        Write-Host "El archivo comprimido no posee archivos dentro."
+    }
     $zip.Dispose() 
     exit
 }
