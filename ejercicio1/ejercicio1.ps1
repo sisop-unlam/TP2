@@ -1,4 +1,21 @@
-﻿Param (
+﻿<#
+***********************************************************************************
+ Nombre Del Script:        ejercicio1.ps1
+ Trabajo Practico Nro.:    2
+ Ejercicio Nro.:           1
+ Entrega Nro.:             1
+ Integrantes:
+    Apellido            Nombre                  DNI
+    --------------------------------------------------
+   
+   Krasuk              Joaquín               40745090
+   Rodriguez           Christian             37947646
+   Vivas               Pablo                 38703964
+***********************************************************************************
+#>
+
+
+Param (
     #Path salida es el primer parametro en ser enviado, y no es obligatorio enviarlo (por default tiene procesos.txt)
     [Parameter(Position = 1, Mandatory = $false)]
     [String] $pathsalida = ".\procesos.txt ",
