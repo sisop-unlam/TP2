@@ -62,7 +62,8 @@ Param(
 if (Test-Path -Path $Entrada ) {
     #Si no tengo el dir base, debo crearlo.
     $dirBase = Split-Path -Path $Salida
-    if (!(Test-Path -Path $dirBase)) {
+    
+    if ($dirBase -ne "" -and (Test-Path -Path $dirBase)) {
         New-Item -ItemType Directory -Force -Path $dirBase
     }
 
